@@ -1,12 +1,14 @@
 Drop Procedure usp_registerUser
 Go
 Create Procedure usp_registerUser
-@username nvarchar(max)=null,
+--@username nvarchar(max)=null,
 @email varchar(300) = null,
-@password nvarchar(max),
-@phoneno varchar(50)= null
+@password nvarchar(max)
+--@phoneno varchar(50)= null
 as
 Begin
+Begin Try
+Begin Transaction
 	Declare @Encrypt varbinary(200),@StatusCode varchar(20) = 'S',@StatusMessage nvarchar(max),@Count int = 0
 
 	--Select @Count = Count(*) from table_user with(nolock) where Username = @username
@@ -29,7 +31,7 @@ Begin
 	Begin
 		Select @Encrypt = EncryptByPassPhrase('#@#D3DWWEW$T%^%REDW#', @password )  
 		Insert Into table_user(Username,Password,Email,PhoneNo) values
-		(@username,@Encrypt,@email,@phoneno)
+		('',@Encrypt,@email,'')
 		--@@@@@--Select Convert(varchar,DECRYPTBYPASSPHRASE('#@#D3DWWEW$T%^%REDW#',@Encrypt)) as Decrypt
 
 
@@ -40,6 +42,13 @@ Begin
 		Set @StatusMessage = 'Registration successfull'
 
 	End
+Commit Transaction
+End Try
+Begin Catch
+	Rollback Transaction
+	Set @StatusCode = 'F'
+	Set @StatusMessage = ERROR_MESSAGE()
+End Catch
 
 	Select @StatusCode StatusCode,@StatusMessage StatusMessage
 	
