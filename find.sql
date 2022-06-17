@@ -4,6 +4,5 @@ as
 Begin
 	SELECT Name
 	FROM sys.objects
-	WHERE OBJECT_DEFINITION(OBJECT_ID) LIKE '%'+ @Name+'%'
+	WHERE OBJECT_DEFINITION(OBJECT_ID) LIKE '%'+ @Name+'%' or name LIKE '%'+ @Name+'%'
 End
-
