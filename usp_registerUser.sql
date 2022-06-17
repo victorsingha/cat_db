@@ -1,21 +1,21 @@
 Drop Procedure usp_registerUser
 Go
 Create Procedure usp_registerUser
-@username nvarchar(max),
-@password nvarchar(max),
+@username nvarchar(max)=null,
 @email varchar(300) = null,
+@password nvarchar(max),
 @phoneno varchar(50)= null
 as
 Begin
 	Declare @Encrypt varbinary(200),@StatusCode varchar(20) = 'S',@StatusMessage nvarchar(max),@Count int = 0
 
-	Select @Count = Count(*) from table_user with(nolock) where Username = @username
-	If(@Count > 0)
-	Begin
-		Set @StatusCode = 'F'
-		Set @StatusMessage = 'Username already taken'
-		Set @Count = 0
-	End
+	--Select @Count = Count(*) from table_user with(nolock) where Username = @username
+	--If(@Count > 0)
+	--Begin
+	--	Set @StatusCode = 'F'
+	--	Set @StatusMessage = 'Username already taken'
+	--	Set @Count = 0
+	--End
 
 	Select @Count = Count(*) from table_user with(nolock) where Email = @email
 	If(@Count > 0)
