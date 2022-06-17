@@ -11,11 +11,11 @@ Begin
 	@Decrypt nvarchar(100)
 
 	Select @Decrypt = Convert(varchar,DECRYPTBYPASSPHRASE('#@#D3DWWEW$T%^%REDW#',Password))
-	from table_user with(nolock) where username = @username 
+	from table_user with(nolock) where Email = @email or Username = @username 
 
 
 
-	Select @Count = Count(*) from table_user with(nolock) where Username = @username and @Decrypt = @password
+	Select @Count = Count(*) from table_user with(nolock) where Email = @email and @Decrypt = @password
 	If(@Count = 0)
 	Begin
 		Set @StatusCode = 'F'
